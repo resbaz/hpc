@@ -28,3 +28,9 @@ broader context.
  - concepts: modules and module loading, $PBS_O_WORKDIR, new CLI tools for
    queue analysis, starting and stopping jobs, job dependencies 
  - the scripting details for PBS
+ - inputs (reading data in) and outputs (reporting data out) - howto, best
+   practice, data transfer and storage (tgz, scp)
+   
+
+
+   
