@@ -16,21 +16,7 @@ more HD, more network bandwidth.
 
 As such, we are more thoughtful about how we use those resources.
 
- -------------                                        ---------------
- | MGMT NODE |  >-------+                 +---------< | WORKER NODE |
- -------------          +-----------------+           ---------------
-                        |                 |
- --------------         |  Network switch |           --------------- 
- | LOGON NODE | >-------+-----------------+---------< | WORKER NODE |
- --------------         |                 |           ---------------
-                        |                 |
-                        |                 |           ---------------
- -------------          |                 +---------< | WORKER NODE |
- |           | >--------+                             ---------------
- |  STORAGE  |
- |           |
- -------------
-
+.. image:: imgs/hpc_structure.png
 
 The Storage is the hard drive space - we don't need to worry too much about it, 
 just know it exists.
