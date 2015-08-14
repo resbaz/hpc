@@ -2,6 +2,47 @@
 High Performance Computing
 ==========================
 
+Fast Start
+==========
+
+Tutorials are boring if they don't start straight away. How do you use HPC?
+
+1. Write a shell (bash, sh, tcsh, csh or ksh) script
+2. Send it to the job queueing system.
+
+Obviously there is more to it than that, so let's start with the minimal 
+extras: what to put into the script and how to put something in the queue.
+
+The Script
+----------
+
+I called it a shell script above because that's what it is. But in HPC 
+terminology it can also be called a PBS script. PBS is the job scheduling 
+system used on this cluster.
+
+
+
+.. code:: shell
+    
+    #!/bin/bash     
+    # pbs script to calculate The Trapezoidal Rule
+    # https://en.wikipedia.org/wiki/Trapezoidal_rule
+    #PBS -N Job_Name  
+    #PBS -A ProjectID
+    #PBS -q QueueName
+    #PBS -m ae
+    #PBS -l nodes=1:ppn=6
+    #PBS -l walltime=01:00:00 
+    #PBS -l pmem=2000mb   
+    module load python
+    cd $PBS_O_WORKDIR 
+    python trapParallel.py 
+
+
+
+
+
+
 HPC Structure - the Hardware
 ============================
 
