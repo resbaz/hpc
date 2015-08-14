@@ -28,18 +28,69 @@ system used on this cluster.
     # pbs script to calculate The Trapezoidal Rule
     # https://en.wikipedia.org/wiki/Trapezoidal_rule
     #PBS -N Job_Name  
-    #PBS -A ProjectID
+    # PBS -A ProjectID
     #PBS -q QueueName
-    #PBS -m ae
+    #PBS -m ae   
     #PBS -l nodes=1:ppn=6
     #PBS -l walltime=01:00:00 
     #PBS -l pmem=2000mb   
     module load python
     cd $PBS_O_WORKDIR 
-    python trapParallel.py 
+    echo $HOSTNAME
+    python helloworld.py   
+    #mpiexec -n 4 python trapParallel_2.py 0.0 1.0 10000
 
+1. #!/bin/bash
 
+Like most scripts, if you leave this out, it will default to /bin/sh
 
+2. #PBS vs # PBS
+
+Using the hash (#) is the normal way to comment in a script. Within the PBS 
+environment
+
+#PBS will run the PBS command, # PBS will not. IE, the second incarnation # PBS 
+is considered "commented out". In the code listed, you will see that the 
+ProjectID line is commented out.
+
+There are a number of default positions, the only strictly necessary PBS
+directive is the -N JobName.
+
+3. #PBS -q QueueName
+
+Queues are used to help prioritise jobs. There are a number of queues that can 
+be used on the cluster, choosing the appropriate queue will help get your 
+program running as expected.
+
+The available queues are serial (default), fast, parallel and batch. Each has 
+different profile: min/max of nodes & cores, etc. The full list is 
+`here <https://edward-web.hpc.unimelb.edu.au/doku.php?id=guides#creating_a_pbs_script>`_.
+
+4. #PBS -m ae
+
+Mail the user if the job aborts or ends.
+
+5. #PBS -l nodes=1:ppn=6
+
+Here we are requesting a single node and 6 cores within that node.
+
+6. #PBS -l walltime=01:00:00 
+
+Walltime specifies how long the job will run for. Data loss can ensue, be 
+careful. Administrators can extend the wall time if required, although 
+only up to a maximum of 96 days. 
+
+7. #PBS -l pmem=2000mb
+
+Requesting a particular amount of memory.
+
+8. module load python
+
+Modules do a lot of dynamic system configuration for us and allow different 
+versions of the same software to be installed and used. We will talk more 
+about modules a little later.
+
+9.  
 
 
 
