@@ -7,7 +7,7 @@ Fast Start
 
 Tutorials are boring if they don't start straight away. How do you use HPC?
 
-1. Write a shell (bash, sh, tcsh, csh or ksh) script
+1. Write a shell (bash, sh, tcsh, csh or ksh) script that manages your program
 2. Send it to the job queueing system.
 
 Obviously there is more to it than that, so let's start with the minimal 
@@ -115,7 +115,43 @@ specially crafted to take advantage of the multiple cores (beyond the scope
 of this tutorial).
 
 
+The Queue
+---------
 
+To run a script against all those cores, we need to put the "job" in a queue.
+Depending on how many nodes and cores we need, there are different queues. We
+saw these represented at step 3 above.
+
+But how do we get it into that queue? We use the command qsub:
+
+.. code:: shell
+
+    [user@edward user]$ qsub myTrapParallel.pbs 
+    1843343.edward-m
+    [user@edward user]$ 
+
+Here we have used qsub to submit the job to a queue, and edward has responded 
+with a job number.
+
+We can see the state of the queue using qstat:
+
+.. code:: shell
+    
+    [user@edward user]$ qstat 
+
+That output isn't much use to us - let's reduce it to just our part of the queue:
+
+.. code:: shell
+    
+    [user@edward user]$ qstat -u user
+
+    edward-m: 
+                                                                             Req'd  Req'd   Elap
+    Job ID               Username    Queue    Jobname          SessID NDS   TSK    Memory Time  S Time
+    -------------------- ----------- -------- ---------------- ------ ----- ------ ------ ----- - -----
+    1843061.edward-m     user        parallel parallel_trapezo    --      5     50    --  01:00 Q   -- 
+    1843230.edward-m     user        fast     parallel_trapezo    --      1     10    --  01:00 Q   -- 
+    1843343.edward-m     user        fast     parallel_trapezo    --      1     10    --  01:00 Q   -- 
 
 
 
