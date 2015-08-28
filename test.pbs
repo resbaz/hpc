@@ -1,0 +1,13 @@
+#!/bin/bash
+#PBS -N test_user
+# PBS -A Lachlan_HPC_1
+#PBS -q serial
+#PBS -m bea
+#PBS -M datakid@gmail.com
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=01:00:00 
+#PBS -l pmem=2000mb   
+
+cd $PBS_O_WORKDIR 
+echo "$PBS_O_WORKDIR"
+

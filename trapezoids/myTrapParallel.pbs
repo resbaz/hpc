@@ -1,0 +1,54 @@
+#!/bin/bash
+# pbs script to calculate The Trapezoidal Rule
+# https://en.wikipedia.org/wiki/Trapezoidal_rule
+#PBS -N parallel_trapezoids
+# PBS -A Lachlan_HPC_1
+#PBS -q fast
+#PBS -m bea
+#PBS -M datakid@gmail.com
+#PBS -l nodes=1:ppn=10
+#PBS -l walltime=01:00:00 
+#PBS -l pmem=2000mb   
+
+module load python
+
+cd $PBS_O_WORKDIR 
+
+if [ ! -d $USER ]; then 
+	mkdir /data/project1/pMelb0283/"$USER";
+	cd /data/project1/pMelb0283/"$USER";
+fi;
+
+
+echo "-------------------"
+echo $HOSTNAME
+echo "trapParallel_1"
+echo "10000 trapezoids"
+mpiexec python trapParallel_1.py 0.0 1.0 10000
+echo "-------------------"
+
+echo "1,000,000 trapezoids"
+mpiexec python trapParallel_1.py 0.0 1.0 1000000
+echo "-------------------"
+
+echo "100,000,000 trapezoids"
+mpiexec python trapParallel_1.py 0.0 1.0 100000000
+echo "-------------------"
+
+echo "-------------------"
+echo $HOSTNAME
+echo "trapParallel_2"
+
+echo "10000 trapezoids"
+mpiexec python trapParallel_2.py 0.0 1.0 10000
+echo "-------------------"
+
+echo "1,000,000 trapezoids"
+mpiexec python trapParallel_2.py 0.0 1.0 1000000
+echo "-------------------"
+
+echo "100,000,000 trapezoids"
+mpiexec python trapParallel_2.py 0.0 1.0 100000000
+echo "-------------------"
+
+exit 0
