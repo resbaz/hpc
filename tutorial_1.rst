@@ -37,8 +37,7 @@ system used on this cluster.
     module load python
     cd $PBS_O_WORKDIR 
     echo $HOSTNAME
-    python helloworld.py   
-    #mpiexec -n 4 python trapParallel_2.py 0.0 1.0 10000
+    mpiexec python trapParallel_1.py 0.0 1.0 10000
 
 1. #!/bin/bash
 
@@ -90,7 +89,33 @@ Modules do a lot of dynamic system configuration for us and allow different
 versions of the same software to be installed and used. We will talk more 
 about modules a little later.
 
-9.  
+9.  cd $PBS_O_WORKDIR 
+    
+This is more important than is immediately obvious, because of the nature of the HPC set up.
+
+- PBS **always** starts executing a job in the user's home directory. 
+- $PBS_O_WORKDIR refers to the directory from which the script was put into the 
+job queue. (we will see how this is done in a moment)
+- important to note that there are three factors here:
+
+ - user's home dir
+ - location of script
+ - location from which script is queued
+
+10. echo $HOSTNAME
+
+execute a random command into the output (just as an eg that this is a regular
+bash script.
+
+11. mpiexec python trapParallel_1.py 0.0 1.0 10000
+
+How we execute our trapParallel_1.py command. Note that not every module or
+program needs to be run using mpiexec - in this case our python script is
+specially crafted to take advantage of the multiple cores (beyond the scope
+of this tutorial).
+
+
+
 
 
 
