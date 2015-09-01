@@ -40,7 +40,7 @@ system used on this cluster.
     echo $HOSTNAME
     mpiexec python trapParallel_1.py 0.0 1.0 10000
 
-1. **#!/bin/bash**
+**1. #!/bin/bash**
 
 Like most scripts, if you leave this out, it will default to /bin/sh
 
