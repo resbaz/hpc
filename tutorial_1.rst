@@ -13,6 +13,7 @@ Tutorials are boring if they don't start straight away. How do you use HPC?
 Obviously there is more to it than that, so let's start with the minimal 
 extras: what to put into the script and how to put something in the queue.
 
+----------
 The Script
 ----------
 
@@ -39,7 +40,7 @@ system used on this cluster.
     echo $HOSTNAME
     mpiexec python trapParallel_1.py 0.0 1.0 10000
 
-1. #!/bin/bash
+1. **#!/bin/bash**
 
 Like most scripts, if you leave this out, it will default to /bin/sh
 
