@@ -19,8 +19,10 @@ The Script
 
 I called it a shell script above because that's what it is. But in HPC 
 terminology it can also be called a PBS script. PBS is the job scheduling 
-system used on this cluster.
+system used on this cluster. 
 
+Below is an example script that we will work through line by line to get an
+understanding of similarities and differences between shell and PBS scripts.
 
 
 .. code:: shell
@@ -42,73 +44,102 @@ system used on this cluster.
 
 **1. #!/bin/bash**
 
-Like most scripts, if you leave this out, it will default to /bin/sh
+Like most scripts, if you leave this out, it will default to /bin/sh.
 
-2. #PBS vs # PBS
+(Pedant: ok, ok, it depends on the system default which is not always /bin/sh,
+but let's move on)
 
-Using the hash (#) is the normal way to comment in a script. Within the PBS 
-environment
+**2. #PBS vs # PBS**
 
-#PBS will run the PBS command, # PBS will not. IE, the second incarnation # PBS 
-is considered "commented out". In the code listed, you will see that the 
-ProjectID line is commented out.
+Using the hash (#) is the traditional way to comment in a script. Within the 
+PBS environment
 
-There are a number of default positions, the only strictly necessary PBS
+#PBS will run the PBS command 
+# PBS will not. 
+
+IE, the second incarnation # PBS is considered "commented out". In the code 
+above, you will see that the ProjectID line is commented out.
+
+There are a number of default values, the only strictly necessary PBS
 directive is the -N JobName.
 
-3. #PBS -q QueueName
+Important note - # is still used as the character to comment out non-PBS script
+lines.
+
+**3. #PBS -q QueueName**
 
 Queues are used to help prioritise jobs. There are a number of queues that can 
 be used on the cluster, choosing the appropriate queue will help get your 
 program running as expected.
 
 The available queues are serial (default), fast, parallel and batch. Each has 
-different profile: min/max of nodes & cores, etc. The full list is 
+different profile: min/max of nodes & cores, memory - and, of course, the time
+you wil need to wait to get those resources. The full list is 
 `here <https://edward-web.hpc.unimelb.edu.au/doku.php?id=guides#creating_a_pbs_script>`_.
 
-4. #PBS -m ae
+**4. #PBS -m ae**
 
-Mail the user if the job aborts or ends.
+Mail the user if the job aborts or ends. Note that the email will also tell
+you which nodes and cores were used if it completed successfully:
 
-5. #PBS -l nodes=1:ppn=6
+.. image:: imgs/email_from_edward.png
 
-Here we are requesting a single node and 6 cores within that node.
 
-6. #PBS -l walltime=01:00:00 
+**5. #PBS -l nodes=1:ppn=6**
 
-Walltime specifies how long the job will run for. Data loss can ensue, be 
-careful. Administrators can extend the wall time if required, although 
-only up to a maximum of 96 days. 
+Here we are requesting a single node and 6 cores within that node. Note that 
+in image above, I have asked for 50 cores. That would look like:
 
-7. #PBS -l pmem=2000mb
+.. code:: shell
 
-Requesting a particular amount of memory.
+    #PBS -l nodes=5:ppn=10
 
-8. module load python
+**6. #PBS -l walltime=01:00:00**
+
+Walltime specifies the maximum time the job should be run for. Essentially
+tells the system "kill this process once it has run for <walltime> long".
+The default is an hour. 
+
+Everyone makes coding errors - this is one way the system protects the 
+community of users against scripts-gone-wild.
+
+Of course, when a process is nuked mid execution, data loss can ensue, so be 
+careful. Administrators can extend the wall time if required, although only 
+up to a maximum of 96 days. (!)
+
+**7. #PBS -l pmem=2000mb**
+
+Requesting a particular amount of memory. This is a "per core" memory request.
+Each node has 64GB of memory. 
+
+**8. module load python**
 
 Modules do a lot of dynamic system configuration for us and allow different 
 versions of the same software to be installed and used. We will talk more 
 about modules a little later.
 
-9.  cd $PBS_O_WORKDIR 
+**9.  cd $PBS_O_WORKDIR**
     
 This is more important than is immediately obvious, because of the nature of the HPC set up.
 
 - PBS **always** starts executing a job in the user's home directory. 
-- $PBS_O_WORKDIR refers to the directory from which the script was put into the 
-job queue. (we will see how this is done in a moment)
+- $PBS_O_WORKDIR refers to the directory from which the script was put into the
+  job queue. (we will see how this is done in a moment)
 - important to note that there are three factors here:
 
- - user's home dir
- - location of script
- - location from which script is queued
+ - user's home dir: /home/<username>/
+ - location of script, for example: 
+   /data/project1/pMelb0283/trapezoids/myTrapParallel.pbs
+ - location from which script is queued: anywhere you want, with sensible
+   defaults available.
 
-10. echo $HOSTNAME
+
+**10. echo $HOSTNAME**
 
 execute a random command into the output (just as an eg that this is a regular
 bash script.
 
-11. mpiexec python trapParallel_1.py 0.0 1.0 10000
+**11. mpiexec python trapParallel_1.py 0.0 1.0 10000**
 
 How we execute our trapParallel_1.py command. Note that not every module or
 program needs to be run using mpiexec - in this case our python script is
