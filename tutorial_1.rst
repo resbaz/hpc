@@ -85,6 +85,7 @@ you which nodes and cores were used if it completed successfully:
 .. image:: imgs/email_from_edward.png
 
 
+
 **5. #PBS -l nodes=1:ppn=6**
 
 Here we are requesting a single node and 6 cores within that node. Note that 
@@ -131,13 +132,13 @@ This is more important than is immediately obvious, because of the nature of the
  - location of script, for example: 
    /data/project1/pMelb0283/trapezoids/myTrapParallel.pbs
  - location from which script is queued: anywhere you want, with sensible
-   defaults available.
+   defaults preferred.
 
 
 **10. echo $HOSTNAME**
 
-execute a random command into the output (just as an eg that this is a regular
-bash script.
+Execute a command into the output (just as an eg that this is a regular bash
+script.
 
 **11. mpiexec python trapParallel_1.py 0.0 1.0 10000**
 
@@ -146,7 +147,7 @@ program needs to be run using mpiexec - in this case our python script is
 specially crafted to take advantage of the multiple cores (beyond the scope
 of this tutorial).
 
-
+---------
 The Queue
 ---------
 
@@ -184,6 +185,71 @@ That output isn't much use to us - let's reduce it to just our part of the queue
     1843061.edward-m     user        parallel parallel_trapezo    --      5     50    --  01:00 Q   -- 
     1843230.edward-m     user        fast     parallel_trapezo    --      1     10    --  01:00 Q   -- 
     1843343.edward-m     user        fast     parallel_trapezo    --      1     10    --  01:00 Q   -- 
+
+
+PBS_O_WORKDIR
+-------------
+
+In step 9 above we referred to the $PBS_O_WORKDIR directory. 
+
+When I queued the job above, I did it from my (well, user's) home directory.
+This is frowned upon, especially for anything that uses or creates large data
+sets. In fact, with a sufficiently large data set, you might fill the disks
+that the home directories are on, which kills the system.
+
+This is why we have the project directory structure:
+
+/data/project1/
+
+in which we have a project, this project is at:
+
+/data/project1/pMelb0283/
+
+in which we can put anything we want - like personal directories.
+
+/data/project1/pMelb0283/trapezoids/myTrapParallel.pbs
+
+So. Looking back on step 9, we would ideally run our script from within our 
+project:
+
+.. code:: shell
+
+    user@edward ~]$ pwd
+    /home/user
+    [user@edward ~]$ cd /data/project1/pMelb0283/trapezoids
+    [user@edward trapezoids]$ qsub myTrapParallel.pbs 
+    1847893.edward-m
+    [user@edward trapezoids]$ 
+
+Of course, we could just as easily run it from anywhere:
+
+.. code:: shell
+
+    [user@edward trapezoids]$ pwd
+    /data/project1/pMelb0283/trapezoids
+    [user@edward trapezoids]$ cd /tmp/
+    [user@edward tmp]$ qsub /data/project1/pMelb0283/trapezoids/myTrapParallel.pbs 
+    1848116.edward-m
+    [user@edward tmp$ 
+
+In this case, $PBS_O_WORKDIR would be /tmp - again, less than ideal. Remember 
+to include the cd into $PBS_O_WORKDIR and remember to launch from your project 
+directory and you will remain friends with the systems administrator.
+
+
+-------
+Modules
+-------
+
+In step 8 we mentioned modules. There are a number of modules and module 
+commands available to us. 
+
+Why modules? Modules allow for multiple versions of the same software to be run
+on the HPC. I want python 2.7, you want python 3.4. I need 32 bit Java, you 
+need 64 bit Java.
+
+When you login, none of these are natively available to your 
+
 
 
 
