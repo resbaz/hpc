@@ -13,6 +13,14 @@ Tutorials are boring if they don't start straight away. How do you use HPC?
 Obviously there is more to it than that, so let's start with the minimal 
 extras: what to put into the script and how to put something in the queue.
 
+Quick and dirty start:
+
+ - login to Edward
+ - cd /data/project1/pMelb0283/
+ - cp -r trapezoids <username>
+ - cd <username>
+ - vim myTrapParallel.pbs 
+
 ----------
 The Script
 ----------
@@ -33,7 +41,7 @@ understanding of similarities and differences between shell and PBS scripts.
     #PBS -N Job_Name  
     # PBS -A ProjectID
     #PBS -q QueueName
-    #PBS -m ae   
+    #PBS -m bae
     #PBS -l nodes=1:ppn=6
     #PBS -l walltime=01:00:00 
     #PBS -l pmem=2000mb   
@@ -79,7 +87,7 @@ you wil need to wait to get those resources. The full list is
 
 **4. #PBS -m ae**
 
-Mail the user if the job aborts or ends. Note that the email will also tell
+Mail the user if the job begins, aborts or ends. Note that the email will also tell
 you which nodes and cores were used if it completed successfully:
 
 .. image:: imgs/email_from_edward.png
