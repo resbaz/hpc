@@ -257,20 +257,21 @@ on the HPC. I want python 2.7, you want python 3.4. I need 32 bit Java, you
 need 64 bit Java. Like Python's virtualenvs, the HPC is set up to isolate what
 you need for any particular project.
 
-When you login, none of these are natively available to you. When you load a 
-module, the system loads all the configurations that will be required - adding
-PATHs, location of software etc.
+When you login, none of these softwares are natively available to you. When you
+load a module, the system loads all the configurations that will be required - 
+adding PATHs, location of software etc.
 
-Each new session will have only the defaults loaded. Start a screen session
-within a session and all will have any modules you have loaded. Secure shell
-in from another terminal and you will only have the defaults.
+Each new session will have only the default modules loaded. Load a module and
+start a screen session within a session and all will have any modules you have 
+loaded. Secure shell in from another terminal and you will only have the 
+defaults.
 
-So, to take our script as an example, and because it has a healthy fork atm, 
-let's look at Python. At first we get what we would expect in any unix like
-system.
+So, to take our script as an example, and because python has a healthy fork 
+atm, let's look at Python. At first we get what we would expect in any unix 
+like system.
 
-Them with tab completion*, we can see the options module can take. (\*type 
-module, then hit tab a couple of times*.)
+Then with tab completion* we can see the options module can take. (\*type 
+module, then hit tab a couple of times.)
 
 .. code:: shell
 
@@ -295,6 +296,7 @@ module list to see what we have intalled already (ie, by default).
 
     [user@edward ~]$ module list 
     Currently Loaded Modulefiles:
+
       1) modules                4) mpc/0.9                7) openmpi-gcc/1.4.5
       2) gmp/5.0.2              5) gcc/4.6.2              8) edward/config-201201
       3) mpfr/3.1.0             6) intel/2012.0
@@ -317,7 +319,8 @@ filter using partials.
       4) mpc/0.9                8) edward/config-201201
 
 
-Note that zlib is also loaded now - module has looked after that for us.
+Note that zlib is also loaded now - module has looked after that for us when 
+it installed python 3.2.3.
 
 .. code:: shell
 
@@ -331,7 +334,7 @@ with the fork, \*nix systems are coming with python and python3.
 
 Try module rm py(tab) zli(tab) and then python3.
 
-Finally, we will look at the 
+Finally, we will look at the hardware, to get an idea of what lies underneath. 
 
 
 HPC Structure - the Hardware
@@ -340,8 +343,7 @@ HPC Structure - the Hardware
 What does a High Performance Computer look like, and why do I need to know?
 
 There is no need for users to have a comprehensive understanding of the HPC 
-hardware, but there is a need for users to have some idea of what it looks 
-like - how it is made up.
+hardware, but there is a need for users to have some idea of how it is made up.
 
 HPC is normal computing, writ large. There is more RAM ("memory"), more CPU, 
 more HD, more network bandwidth.
@@ -383,50 +385,4 @@ your project across the cores and nodes as necessary.
 
 The current system has 180 WORKER NODES for 2880 cores total.
 
-Working notes:
-It's important for users to understand how HPC is constructed physically because:
 
- - there are performance reasons (it *is* HPC after all, this is no butter knife, it's a chainsaw.)
- - there is the practical *result* reason - an understanding of how to get the *best* result from HPC. If your project gets no positive value, why use HPC in the first place?
- - there is the practical working reason - without an understanding you may break it.
-
-
----------------------------------------------------------------- 
-
-
-HPC Structure - the efficiencies 
-================================
-
-The first and most obvious efficiency is that the cluster can do parallel 
-computing. With that many nodes and cores, a lot of software can perform with
-better throughput.
-
-This is the difference between a four core laptop taking a month to run a
-complex function in MatLab and the cluster running in in tens of minutes 
-utilising numerous cores - as many as you request.
-
-working notes
- - gives us an understanding of approximately what type of efficiencies we 
-   can expect, and from this we can determine how many cores/cpus to 
-   request
-
-
-HPC Structure - the limits
-==========================
-
-If you request more than 128 cores, you may be waiting a long time for 
-those cores to be free. 
-
-
-
-
-Working notes:
-
- - gives us an understanding of scheduling/job queueing and how it is done
- - nodes vs cores, why it matters, and when it doesn't 
-
-
-
-
-
-   
