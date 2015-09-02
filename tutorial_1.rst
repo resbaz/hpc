@@ -26,8 +26,8 @@ The Script
 ----------
 
 I called it a shell script above because that's what it is. But in HPC 
-terminology it can also be called a PBS script. PBS is the job scheduling 
-system used on this cluster. 
+terminology it can also be called a PBS script. PBS - Portable Batch System -
+is the job scheduling system used on this cluster.
 
 Below is an example script that we will work through line by line to get an
 understanding of similarities and differences between shell and PBS scripts.
@@ -238,7 +238,7 @@ Of course, we could just as easily run it from anywhere:
     [user@edward trapezoids]$ cd /tmp/
     [user@edward tmp]$ qsub /data/project1/pMelb0283/trapezoids/myTrapParallel.pbs 
     1848116.edward-m
-    [user@edward tmp$ 
+    [user@edward tmp]$ 
 
 In this case, $PBS_O_WORKDIR would be /tmp - again, less than ideal. Remember 
 to include the cd into $PBS_O_WORKDIR and remember to launch from your project 
@@ -254,11 +254,84 @@ commands available to us.
 
 Why modules? Modules allow for multiple versions of the same software to be run
 on the HPC. I want python 2.7, you want python 3.4. I need 32 bit Java, you 
-need 64 bit Java.
+need 64 bit Java. Like Python's virtualenvs, the HPC is set up to isolate what
+you need for any particular project.
 
-When you login, none of these are natively available to your 
+When you login, none of these are natively available to you. When you load a 
+module, the system loads all the configurations that will be required - adding
+PATHs, location of software etc.
+
+Each new session will have only the defaults loaded. Start a screen session
+within a session and all will have any modules you have loaded. Secure shell
+in from another terminal and you will only have the defaults.
+
+So, to take our script as an example, and because it has a healthy fork atm, 
+let's look at Python. At first we get what we would expect in any unix like
+system.
+
+Them with tab completion*, we can see the options module can take. (\*type 
+module, then hit tab a couple of times*.)
+
+.. code:: shell
+
+    [user@edward ~]$ which python
+    /usr/bin/python
+    [user@edward ~]$ python --version
+    Python 2.6.6
+    [user@edward ~]$ python3
+    -bash: python3: command not found
+    [user@edward ~]$ module 
+    add          help         initrm       purge        switch       whatis
+    apropos      initadd      initswitch   refresh      unload       
+    avail        initclear    keyword      rm           unuse        
+    clear        initlist     list         show         update       
+    display      initprepend  load         swap         use          
 
 
+Module has a man page to see what each of those commands does. Ok, let's use 
+module list to see what we have intalled already (ie, by default). 
+
+.. code:: shell
+
+    [user@edward ~]$ module list 
+    Currently Loaded Modulefiles:
+      1) modules                4) mpc/0.9                7) openmpi-gcc/1.4.5
+      2) gmp/5.0.2              5) gcc/4.6.2              8) edward/config-201201
+      3) mpfr/3.1.0             6) intel/2012.0
+
+Unfortunately the output from 'module avail' can't be grepped, but we can 
+filter using partials.
+
+
+.. code:: shell
+
+    [user@edward ~]$ module load python
+    python             python/2.7.2-gcc   python/2.7.6-gcc   python/3.2.3-gcc
+    python/2.7.10-gcc  python/2.7.3-gcc   python/3.2.2-gcc   
+    [user@edward ~]$ module load python/3.2.3-gcc 
+    [user@edward ~]$ module list
+    Currently Loaded Modulefiles:
+      1) modules                5) gcc/4.6.2              9) zlib/1.2.7
+      2) gmp/5.0.2              6) intel/2012.0          10) python/3.2.3-gcc
+      3) mpfr/3.1.0             7) openmpi-gcc/1.4.5
+      4) mpc/0.9                8) edward/config-201201
+
+
+Note that zlib is also loaded now - module has looked after that for us.
+
+.. code:: shell
+
+    [user@edward ~]$ which python
+    /usr/bin/python
+    [user@edward ~]$ which python3
+    /usr/local/python/3.2.3-gcc/bin/python3
+
+And of course, Python plays funny - because the software is itself struggling
+with the fork, \*nix systems are coming with python and python3.
+
+Try module rm py(tab) zli(tab) and then python3.
+
+Finally, we will look at the 
 
 
 HPC Structure - the Hardware
