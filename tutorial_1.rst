@@ -385,4 +385,37 @@ your project across the cores and nodes as necessary.
 
 The current system has 180 WORKER NODES for 2880 cores total.
 
+When requesting resources - cores or memory in particular - your request will
+be dealt with when the resources are ready or available (depending on what 
+you have asked for).
 
+In some cases, this may take a while.
+
+
+ - if you request 256 cores, you may well be waiting a long time.
+ - if you request a single core on a node (or multiple nodes), but 16GB RAM for
+   each core, you will need an entire node per core. 
+ - there is a difference between the two following requests:
+
+.. code:: shell    
+
+    #PBS -l nodes=5:ppn=2
+
+    #PBS -l nodes=1:ppn=10
+
+
+Both will give you 10 cores. 
+
+One will need to wait until a node is free with 10 out of sixteen cores. This
+may take longer since you have requested more than half a core.
+
+One will need to wait for five nodes with 2 cores free in each. This may be 
+quicker if you get the balance in a series of nodes on which other researchers
+have requested less than 14 cores. **But** remember that there will be a 
+network latency between the nodes. Which is potentially not a huge impact, but
+it depends on what your needs are.
+
+Other factors include how much strain the cluster is under. I don't know the 
+heavy load times, but I'd imagine between 12pm and 11pm are relatively heavy
+use times, 3-6am lower use times. Late Sunday-Tuesday may be used less heavily
+than Wed-Friday?
